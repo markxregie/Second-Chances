@@ -71,9 +71,11 @@
 ![User management](Screenshots/Usermanagement.png)
 
 
+### Thank You  
+<p align="center">
+  <img src="Screenshots/3dgifmaker84834.gif" alt="Cheddar">
+</p>
 
-### Thank you 
-![Cheddar](Screenshots/3dgifmaker84834.gif)
 
 
 
