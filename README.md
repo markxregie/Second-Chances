@@ -12,7 +12,7 @@
 ![Landing Page](Screenshots/Landingpage.png)
 
 ### Landing Page
-![Adoption Page](Screenshots/Adoption_Page.png)
+![Adoption Page](Screenshots/Adoption Page.png)
 
 
 
