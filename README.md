@@ -9,7 +9,8 @@
 ## Project Overview
 
 ### Landing Page
-![User Management]("C:\Users\user\Documents\VERY FINAL\Landing page.png")
+![Landing Page](Screenshots/landingpage.png)
+
 
 
 
