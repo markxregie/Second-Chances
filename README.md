@@ -1,4 +1,4 @@
-Second Chances - Pet Adoption System
+<b>Second Chances - Pet Adoption System</b>
 
 Project Goals
 
