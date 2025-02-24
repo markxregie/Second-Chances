@@ -14,14 +14,33 @@
 ### Adoption Page
 ![Adoption Page](Screenshots/AdoptionPage.png)
 
+### User Profile
+![User Profile](Screenshots/UserProfilePage.png)
+
 ### Pet Summary Page
 ![Pet Summary Page](Screenshots/Selectedpetsummary.png)
 
 ### Adoption form
 ![Adoptionform](Screenshots/Adoptionform.png)
 
+### Confirmation form 
+![Confirmation form ](Screenshots/Cnfirmationform.png)
+
+### Pets Dashboard 
+![Pets Dashboard](Screenshots/PetsDashboard.png)
 
 
+### Adoption request
+![Adoption request](Screenshots/Adoptionrequest.png)
+
+### Adoption request summary
+![Adoption request summary](Screenshots/Adoptionrequestsummary.png)
+
+### Adopted pets
+![Adopted pets](Screenshots/adoptedpets.png)
+
+### View of Adopted Pet
+![View of Adopted Pet](Screenshots/Viewofadoptedpet.png)
 
 
 
