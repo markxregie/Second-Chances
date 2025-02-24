@@ -1,0 +1,133 @@
+﻿@model List<User>
+
+@{
+    Layout = "~/Views/Shared/_PetManager.cshtml";
+}
+
+<style>
+    .container {
+        max-width: 800px;
+    }
+
+    .modal-body th {
+        width: 30%;
+        font-weight: bold;
+    }
+</style>
+
+<div class="container mt-5">
+    <h1 class="mb-4">User Management</h1>
+
+    <button class="btn btn-success mb-3" data-bs-toggle="modal" data-bs-target="#addUserModal">Add New User</button>
+
+    <table class="table table-striped text-center">
+        <thead>
+            <tr>
+                <th>Full Name</th>
+                <th>Email</th>
+                <th>Role</th>
+                <th>Created At</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var user in Model)
+            {
+                <tr>
+                    <td>@user.Name</td>
+                    <td>@user.Email</td>
+                    <td>@user.Role</td>
+                    <td>@user.CreatedAt.ToString("yyyy-MM-dd HH:mm")</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
+
+<!-- Add User Modal -->
+<div class="modal fade" id="addUserModal" tabindex="-1" aria-labelledby="addUserModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header bg-success text-white">
+                <h5 class="modal-title" id="addUserModalLabel">Add New User</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <form method="post" action="@Url.Action("AddUser", "User")" id="addUserForm" novalidate>
+                <div class="modal-body">
+                    <div class="mb-3">
+                        <label for="name" class="form-label">Full Name <span class="text-danger">*</span></label>
+                        <input type="text" class="form-control" id="name" name="Name" required>
+                        <div class="invalid-feedback">Full Name is required.</div>
+                    </div>
+                    <div class="mb-3">
+                        <label for="email" class="form-label">Email <span class="text-danger">*</span></label>
+                        <input type="email" class="form-control" id="email" name="Email" required>
+                        <div class="invalid-feedback">Please enter a valid email.</div>
+                    </div>
+                    <div class="mb-3">
+                        <label for="password" class="form-label">Password <span class="text-danger">*</span></label>
+                        <input type="password" class="form-control" id="password" name="Password" minlength="8" required>
+                        <div class="invalid-feedback">Password must be at least 8 characters long and contain a special character.</div>
+                    </div>
+                    <div class="mb-3">
+                        <label for="address" class="form-label">Address <span class="text-danger">*</span></label>
+                        <input type="text" class="form-control" id="address" name="Address" required>
+                        <div class="invalid-feedback">Address is required..</div>
+                    </div>
+                    <div class="mb-3">
+                        <label for="role" class="form-label">Role <span class="text-danger">*</span></label>
+                        <select class="form-select" id="role" name="Role" required>
+                            <option value="" selected disabled>Select Role</option>
+                            <option value="User">User</option>
+                            <option value="Admin">Admin</option>
+                        </select>
+                        <div class="invalid-feedback">Please select a role.</div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    <button type="submit" class="btn btn-success">Add User</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<script>
+    document.getElementById("addUserForm").addEventListener("submit", function(event) {
+        let form = event.target;
+        if (!form.checkValidity()) {
+            event.preventDefault();
+            event.stopPropagation();
+        }
+        form.classList.add("was-validated");
+    });
+     document.getElementById("addUserForm").addEventListener("submit", function(event) {
+        let form = event.target;
+        let passwordInput = document.getElementById("password");
+        let passwordValue = passwordInput.value;
+
+
+        let specialCharacters = "!#%^&*()_+[]{}|;:',.<>?/";
+
+        let hasSpecialCharacter = false;
+        for (let char of passwordValue) {
+            if (specialCharacters.includes(char)) {
+                hasSpecialCharacter = true;
+                break;
+            }
+        }
+
+        if (passwordValue.length < 8 || !hasSpecialCharacter) {
+            passwordInput.setCustomValidity("Password must be at least 8 characters long and contain at least one special character .");
+        } else {
+            passwordInput.setCustomValidity("");
+        }
+
+        if (!form.checkValidity()) {
+            event.preventDefault();
+            event.stopPropagation();
+        }
+
+        form.classList.add("was-validated");
+    });
+</script>

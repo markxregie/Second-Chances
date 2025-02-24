@@ -1,0 +1,214 @@
+﻿@model dynamic
+
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<style>
+    body {
+        background-color: #85976A;
+        color: #fff;
+        font-family: Arial, sans-serif;
+    }
+
+    .card {
+        background-color: #687451;
+        border: none;
+    }
+
+    .table th, .table td {
+        vertical-align: middle;
+    }
+
+    .status-pending {
+        background-color: #FFD700;
+        color: #000;
+    }
+
+    .status-approved {
+        background-color: #28A745;
+        color: #fff;
+    }
+
+    .status-rejected {
+        background-color: #DC3545;
+        color: #fff;
+    }
+
+    .status-cancelled {
+        background-color: #DC3545;
+        color: #fff;
+    }
+
+    .form-control {
+        background-color: #3E563C;
+        color: #fff;
+    }
+
+    .delete-btn {
+        background: none;
+        border: none;
+        color: #fff;
+        cursor: pointer;
+    }
+
+        .delete-btn:hover {
+            color: #DC3545;
+        }
+
+    .profile-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        background-color: #00291C;
+        padding: 10px;
+        border-radius: 5px;
+    }
+
+        .profile-header h2 {
+            flex: 1;
+            margin: 0;
+            color: #FCFBFA;
+            text-align: left;
+            font-size: 30px;
+            padding-left: 20px;
+        }
+
+        .profile-header .details {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-end;
+            flex: 1;
+            color: #FCFBFA;
+            font-size: 15px;
+            padding-right: 20px;
+            padding-top: 10px;
+        }
+</style>
+
+<div class="landing-curve landing-dark-color mb-10 mb-lg-10">
+    <svg viewBox="15 12 1470 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M0 11C3.93573 11.3356 7.85984 11.6689 11.7725 12H1488.16C1492.1 11.6689 1496.04 11.3356 1500 11V12H1488.16C913.668 60.3476 586.282 60.6117 11.7725 12H0V11Z" fill="currentColor" style="color: #687451;"></path>
+    </svg>
+</div>
+
+<div class="container py-4" style="height:500px;">
+    <div class="card p-3">
+
+        <!-- Search bar -->
+        <div class="mb-3">
+            <input type="text" class="form-control" placeholder="Search pets by name, species, status...">
+        </div>
+
+        <!-- Identification -->
+        <div class="profile-header mb-4">
+            <h2>@Model.User.Name</h2>
+            <div class="details">
+                <p>@Model.User.Email</p>
+                <p>@Model.PhoneNumber</p> 
+            </div>
+        </div>
+
+        <!-- Table to Display Adoption Requests -->
+        <table class="table text-white">
+            <thead>
+                <tr>
+                    <th>Schedule</th>
+                    <th>Species</th>
+                    <th>Pet Name</th>
+                    <th>Status</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var request in Model.AdoptionRequests)
+                {
+                    <tr>
+                        <td>@request.RequestDate.ToString("MMM d, yyyy")</td>
+                        <td>@request.Pet.Species</td>
+                        <td>@request.Pet.Name</td>
+                        <td>
+                            @if (request.Status == "Pending")
+                            {
+                                <span class="badge status-pending">Pending</span>
+                            }
+                            else if (request.Status == "Approved")
+                            {
+                                <span class="badge status-approved">Approved</span>
+                            }
+                            else if (request.Status == "Rejected")
+                            {
+                                <span class="badge status-rejected">Rejected</span>
+                            }
+                            else if (request.Status == "Cancelled")
+                            {
+                                <span class="badge status-cancelled">Cancelled</span>
+                            }
+                        </td>
+                        <td>
+                            @if (request.Status == "Pending")
+                            {
+                                <button class="delete-btn" data-bs-toggle="modal" data-bs-target="#cancelAdoptionModal" data-id="@request.Id">
+                                    <i class="bi bi-trash"></i>
+                                </button>
+                            }
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<!-- Modal for canceling adoption -->
+<div class="modal fade" id="cancelAdoptionModal" tabindex="-1" aria-labelledby="cancelAdoptionModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="cancelAdoptionModalLabel">Cancel Adoption</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                Are you sure you want to cancel this adoption?
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">No</button>
+                <button type="button" class="btn btn-danger" id="confirmCancelAdoption">Yes</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        let requestIdToCancel = null;
+
+        // Capture the request ID when cancel button is clicked
+        document.querySelectorAll(".delete-btn").forEach(button => {
+            button.addEventListener("click", function () {
+                requestIdToCancel = this.getAttribute("data-id");
+            });
+        });
+
+        // Confirm cancellation and send AJAX request
+        document.getElementById("confirmCancelAdoption").addEventListener("click", function () {
+            if (requestIdToCancel) {
+                fetch('/Adoption/CancelAdoption', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+                    body: new URLSearchParams({ requestId: requestIdToCancel })
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        alert("Adoption request canceled successfully.");
+                        location.reload(); // Refresh page
+                    } else {
+                        alert("Error: " + data.message);
+                    }
+                })
+                .catch(error => console.error("Error:", error));
+            }
+        });
+    });
+</script>

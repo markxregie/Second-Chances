@@ -1,0 +1,265 @@
+﻿@page
+
+@{
+	Layout = "~/Views/Shared/_Register.cshtml";
+}
+
+<!--begin::Body-->
+<div class="d-flex flex-column-fluid flex-lg-row-auto justify-content-center justify-content-lg-end p-12 p-lg-20">
+	<!--begin::Card-->
+	<div class="bg-body d-flex flex-column align-items-stretch flex-center rounded-4 w-md-600px p-20">
+		<!--begin::Wrapper-->
+		<div class="d-flex flex-center flex-column flex-column-fluid px-lg-10 pb-15 pb-lg-20">
+			<!--begin::Form-->
+			<form asp-controller="Account" asp-action="Register" method="post" class="form w-100" novalidate="novalidate" id="kt_sign_up_form">
+				<!--begin::Login options-->
+				<div class="row g-3 mb-9">
+					<!--begin::Col-->
+					<div class="col-md-12 text-center">
+						<img src="~/media/logos/landing-dark.svg" alt="Logo" />
+					</div>
+					<!--end::Col-->
+				</div>
+				<!--end::Login options-->
+				<!--begin::Separator-->
+
+				<div id="registerSuccess" class="alert alert-success d-none">Registration Successful! Redirecting...</div>
+				<div id="registerError" class="alert alert-danger d-none">An error occurred. Please try again.</div>
+
+				<div class="separator separator-content my-14">
+					<span class="w-125px text-gray-500 fw-semibold fs-7">Sign Up</span>
+				</div>
+				<!--end::Separator-->
+				<!-- Full Name -->
+				<div class="fv-row mb-8">
+					<label for="Name" class="form-label">Full Name <span class="required"></span></label>
+					<input id="Name" type="text" name="Name" autocomplete="off" class="form-control bg-transparent" required />
+				</div>
+
+				<!-- Email -->
+				<div class="fv-row mb-8">
+					<label for="Email" class="form-label">Email <span class="required"></span></label>
+					<input id="Email" type="email" name="Email" autocomplete="off" class="form-control bg-transparent" required />
+				</div>
+
+				<!-- Address -->
+				<div class="fv-row mb-8">
+					<label for="Address" class="form-label">Address <span class="required"></span></label>
+					<input id="Address" type="text" name="Address" autocomplete="off" class="form-control bg-transparent" required />
+				</div>
+
+				<!--begin::Password group-->
+				<div class="fv-row mb-8" data-kt-password-meter="true">
+					<label for="Password" class="form-label">Password <span class="required"></span></label>
+					<!--begin::Wrapper-->
+					<div class="mb-1">
+						<!--begin::Input wrapper-->
+						<div class="position-relative mb-3">
+							<input id="Password" class="form-control bg-transparent" type="password"  name="Password" autocomplete="off" required />
+							<span class="btn btn-sm btn-icon position-absolute translate-middle top-50 end-0 me-n2" data-kt-password-meter-control="visibility">
+								<i class="ki-duotone ki-eye-slash fs-2"></i>
+								<i class="ki-duotone ki-eye fs-2 d-none"></i>
+							</span>
+						</div>
+						<!--end::Input wrapper-->
+						<!--begin::Meter-->
+						<div class="d-flex align-items-center mb-3" data-kt-password-meter-control="highlight">
+							<div class="flex-grow-1 bg-secondary bg-active-success rounded h-5px me-2"></div>
+							<div class="flex-grow-1 bg-secondary bg-active-success rounded h-5px me-2"></div>
+							<div class="flex-grow-1 bg-secondary bg-active-success rounded h-5px me-2"></div>
+							<div class="flex-grow-1 bg-secondary bg-active-success rounded h-5px"></div>
+						</div>
+						<!--end::Meter-->
+					</div>
+					<!--end::Wrapper-->
+					<!--begin::Hint-->
+					<div class="text-muted">Use 8 or more characters with a mix of letters, numbers &amp; symbols.</div>
+					<!--end::Hint-->
+				</div>
+				<!--end::Password group-->
+				<!-- Confirm Password -->
+				<div class="fv-row mb-8">
+					<label for="ConfirmPassword" class="form-label">Confirm Password <span class="required"></span></label>
+					<input id="ConfirmPassword" name="ConfirmPassword" type="password" autocomplete="off" class="form-control bg-transparent" required />
+				</div>
+
+				<!--begin::Accept Terms-->
+				<div class="fv-row mb-8">
+					<div class="form-check">
+						<input class="form-check-input" type="checkbox" name="toc" value="1" id="toc" required />
+						<label class="form-check-label fw-semibold text-gray-700 fs-base" for="toc">
+							I Accept the
+							<a href="#" class="ms-1 link-primary" data-bs-toggle="modal" data-bs-target="#termsModal">Terms <span class="required"></span></a>
+						</label>
+					</div>
+				</div>
+				<!--end::Accept Terms-->
+				<!--begin::Submit button-->
+				<div class="d-grid mb-10">
+					<button type="submit" id="kt_sign_up_submit" class="btn btn-primary">
+						<span class="indicator-label">Sign up</span>
+						<span class="indicator-progress">
+							Please wait...
+							<span class="spinner-border spinner-border-sm align-middle ms-2"></span>
+						</span>
+					</button>
+				</div>
+				<!--end::Submit button-->
+				<!--begin::Sign in link-->
+				<div class="text-gray-500 text-center fw-semibold fs-6">
+					Already have an Account?
+					<a asp-controller="Home" asp-action="Login" class="link-primary fw-semibold">Sign in</a>
+				</div>
+				<!--end::Sign in link-->
+			</form>
+			<!--end::Form-->
+		</div>
+		<!--end::Wrapper-->
+	</div>
+	<!--end::Card-->
+</div>
+<!--end::Body-->
+<!-- Modal for Terms and Conditions -->
+<div class="modal fade" id="termsModal" tabindex="-1" aria-labelledby="termsModalLabel" aria-hidden="true">
+	<div class="modal-dialog modal-lg modal-dialog-centered">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h5 class="modal-title" id="termsModalLabel">Terms and Conditions for Second Chances</h5>
+				<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+			</div>
+			<div class="modal-body">
+				<p>
+					<strong>1. Introduction</strong><br>
+					Welcome to Second Chances. By registering for pet adoption, you agree to comply with and be bound by the following terms and conditions. Please read these terms carefully before proceeding with the adoption process.
+				</p>
+
+				<p><strong>2. Eligibility</strong></p>
+				<ul>
+					<li>The adopter must have the legal capacity to enter into a binding agreement.</li>
+					<li>The adopter must have a stable living environment suitable for the pet.</li>
+					<li>The adopter agrees to allow a home inspection if required.</li>
+				</ul>
+
+				<p><strong>3. Responsibilities of the Adopter</strong></p>
+				<ul>
+					<li>The adopter agrees to provide a safe, loving, and healthy environment for the pet.</li>
+					<li>The adopter must provide proper food, water, shelter, and medical care for the pet.</li>
+					<li>The pet must not be used for breeding, fighting, or any illegal activities.</li>
+					<li>The adopter must comply with local pet ownership laws and regulations.</li>
+					<li>If the adopter is unable to care for the pet, they must notify [Organization Name] and not surrender the pet to a shelter or third party without prior approval.</li>
+				</ul>
+
+				<p><strong>4. Health and Medical Care</strong></p>
+				<ul>
+					<li>The pet will be provided to the adopter in good health, with up-to-date vaccinations and medical records.</li>
+					<li>[Organization Name] makes no guarantees about the pet’s long-term health or temperament.</li>
+					<li>The adopter assumes full responsibility for future medical care.</li>
+				</ul>
+
+				<p><strong>5. Liability</strong></p>
+				<ul>
+					<li>[Organization Name] is not responsible for any injuries, damages, or losses caused by the pet after adoption.</li>
+					<li>The adopter agrees to hold [Organization Name] harmless from any claims arising from pet ownership.</li>
+				</ul>
+
+				<p><strong>6. Termination of Adoption</strong></p>
+				<ul>
+					<li>Second Chances reserves the right to reclaim the pet if the adopter fails to comply with these terms.</li>
+					<li>Failure to provide proper care or evidence of neglect may result in legal action.</li>
+				</ul>
+
+				<p>
+					<strong>7. Amendments</strong><br>
+					Second Chances reserves the right to update these terms at any time. Adopters will be notified of significant changes.
+				</p>
+
+				<p>
+					By completing the adoption registration, you acknowledge that you have read, understood, and agreed to these terms and conditions.<br><br>
+					<strong>Second Chances</strong><br>
+					SecondChances@gmail.com
+				</p>
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+			</div>
+		</div>
+	</div>
+</div>
+
+<script>
+	// Validate form on submit, including custom password validation
+	document.getElementById("kt_sign_up_form").addEventListener("submit", function(event) {
+		let form = event.target;
+		let passwordInput = document.querySelector("input[name='Password']");
+		let passwordValue = passwordInput.value;
+
+		let specialCharacters = "!#%^&*()_+[]{}|;:',.<>?/";
+		let hasSpecialCharacter = false;
+		for (let char of passwordValue) {
+			if (specialCharacters.includes(char)) {
+				hasSpecialCharacter = true;
+				break;
+			}
+		}
+
+		if (passwordValue.length < 8 || !hasSpecialCharacter) {
+			passwordInput.setCustomValidity("Password must be at least 8 characters long and contain at least one special character.");
+		} else {
+			passwordInput.setCustomValidity("");
+		}
+
+		if (!form.checkValidity()) {
+			event.preventDefault();
+			event.stopPropagation();
+		}
+
+		form.classList.add('was-validated');
+	});
+
+	// Existing registration submission via fetch when button is clicked
+	document.getElementById("kt_sign_up_submit").addEventListener("click", function () {
+		let formData = {
+			Name: document.querySelector("input[name='Name']").value,
+			Email: document.querySelector("input[name='Email']").value,
+			Address: document.querySelector("input[name='Address']").value,
+			Password: document.querySelector("input[name='Password']").value,
+			ConfirmPassword: document.querySelector("input[name='ConfirmPassword']").value
+		};
+
+		if (!formData.Name || !formData.Email || !formData.Password || !formData.ConfirmPassword) {
+			document.getElementById("registerError").innerHTML = "All fields are required!";
+			document.getElementById("registerError").classList.remove("d-none");
+			return;
+		}
+
+		if (formData.Password !== formData.ConfirmPassword) {
+			document.getElementById("registerError").innerHTML = "Passwords do not match!";
+			document.getElementById("registerError").classList.remove("d-none");
+			return;
+		}
+
+		fetch("/Account/Register", {
+			method: "POST",
+			headers: {
+				"Content-Type": "application/json"
+			},
+			body: JSON.stringify(formData)
+		})
+		.then(response => response.json())
+		.then(data => {
+			if (data.success) {
+				document.getElementById("registerSuccess").classList.remove("d-none");
+				setTimeout(() => {
+					window.location.href = "/Home/Login";
+				}, 2000);
+			} else {
+				document.getElementById("registerError").innerHTML = data.message;
+				document.getElementById("registerError").classList.remove("d-none");
+			}
+		})
+		.catch(error => {
+			document.getElementById("registerError").innerHTML = "Something went wrong!";
+			document.getElementById("registerError").classList.remove("d-none");
+		});
+	});
+</script>

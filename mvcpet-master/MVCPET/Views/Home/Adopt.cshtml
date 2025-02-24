@@ -1,0 +1,119 @@
+﻿@model MVCPET.Controllers.HomeController.PetViewModel
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<style>
+    /* General filter button styling */
+    .filter-button {
+        background: none;
+        border: none;
+        font-size: 20px;
+        color: white;
+        text-decoration: none;
+        padding: 5px 10px;
+        cursor: pointer;
+    }
+
+        /* Add underline when active */
+        .filter-button[data-active="true"],
+        .filter-button:hover {
+            text-decoration: underline;
+        }
+
+        /* Remove focus outline for a cleaner look */
+        .filter-button:focus {
+            outline: none;
+        }
+
+    .img-placeholder {
+        width: 200px;
+        height: 200px;
+        border-radius: 150px;
+        background-color: #ccc;
+        text-align: center;
+        line-height: 200px;
+        font-size: 20px;
+        color: white;
+    }
+    .pet-card img {
+    width: 200px;
+    height: 200px;
+    object-fit: cover; 
+    border-radius: 50%;
+}
+
+</style>
+
+<div class="mb-9">
+    <div class="">
+        <div class="">
+            <!--begin::Landing hero-->
+            <div class="d-flex flex-column flex-center w-100 min-h-350px min-h-lg-500px px-9" style="background: #687451;">
+                <!--begin::Heading-->
+                <div class="text-center mb-5 mb-lg-10 py-10 py-lg-20">
+                    <!-- Title -->
+                    <h1 class="text-white lh-base fw-bold fs-2x fs-lg-3x mb-15"><i>Looking for new companions!</i></h1>
+                    <h1 class="text-white">Start your journey to giving a pet their forever home today.</h1>
+
+                    <center>
+                        <!-- Filter Buttons -->
+                        <div class="btn-group" role="group" aria-label="Filter Bar" style="background-color: #00291C; border-radius: 15px; margin-top: 40px;">
+                            <button type="button" data-filter="all" class="btn text-white" style="background-color: #00291C; border: none;" onclick="filterPets('all')">All</button>
+                            <button type="button" data-filter="cat" class="btn text-white" style="background-color: #00291C; border-left: 2px dashed black; border-right: 2px dashed black;" onclick="filterPets('cat')">Cat</button>
+                            <button type="button" data-filter="dog" class="btn text-white" style="background-color: #00291C; border: none;" onclick="filterPets('dog')">Dog</button>
+                        </div>
+                    </center>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="mb-2">
+    <div class="container">
+        <div class="row" id="pet-list">
+            @foreach (var pet in Model.Adoptees.Where(p => !p.IsAdopted)) // Only show pets where isAdopted == false
+            {
+                <div class="col-md-3 text-center pet-card" data-species="@pet.Species.ToLower()">
+                    <a asp-controller="Home" asp-action="PetDetails" asp-route-id="@pet.Id">
+                        <img src="@(!string.IsNullOrEmpty(pet.PhotoPath) ? pet.PhotoPath : "https://via.placeholder.com/200")"
+                             class="rounded-circle img-fluid" width="200" height="200" />
+                    </a>
+                    <h3 class="mt-2">@pet.Name</h3>
+                    <p>@pet.Species</p>
+                </div>
+            }
+        </div>
+    </div>
+</div>
+
+<script>
+    function filterPets(species) {
+        // Remove active class from all filter buttons
+        document.querySelectorAll('.filter-button').forEach(button => {
+            button.classList.remove('active');
+        });
+
+        // Add active class to clicked button
+        document.querySelector(`[data-filter="${species}"]`).classList.add('active');
+
+        // Get all pet cards
+        let pets = document.querySelectorAll('.pet-card');
+
+        // Show or hide pets based on filter
+        pets.forEach(pet => {
+            let petSpecies = pet.getAttribute('data-species');
+            if (species === "all" || petSpecies === species) {
+                pet.style.display = "block";
+            } else {
+                pet.style.display = "none";
+            }
+        });
+    }
+
+    // Default filter to 'All' on page load
+    document.addEventListener("DOMContentLoaded", function () {
+        filterPets('all');
+    });
+</script>

@@ -1,0 +1,261 @@
+﻿@model List<MVCPET.Models.PetAdoptionViewModel>
+
+@{
+    Layout = "~/Views/Shared/_PetManager.cshtml";
+}
+
+<style>
+    .container {
+        max-width: 400rem;
+        margin-left: 0px;
+        padding: 0 15px;
+    }
+
+        .container h1 {
+            font-size: 2rem;
+            color: #00291C;
+        }
+
+        .container table thead {
+            background-color: #687451;
+            color: white;
+        }
+
+    .card-text {
+        font-size: 2.5rem;
+        font-weight: bold;
+    }
+
+    .modal-body th {
+        width: 40%;
+        color: #6c757d;
+        font-weight: bold;
+        padding-right: 15px;
+    }
+
+    .modal-body td {
+        color: #343a40;
+        font-weight: 500;
+    }
+
+    .img-thumbnail {
+        max-width: 100px;
+        height: auto;
+    }
+</style>
+
+<div class="container mt-10">
+    <h1 class="text-start mb-4">Adopted Pets</h1>
+
+
+    <!-- Filter Buttons -->
+    <div class="btn-group" role="group" aria-label="Filter Bar" style="background-color: #00291C; border-radius: 15px; margin-bottom: 20px;">
+        <button type="button" class="btn text-white" style="background-color: #00291C; border: none;">Filter by</button>
+        <button type="button" class="btn text-white" style="background-color: #00291C; border: none;">Date</button>
+        <button type="button" class="btn text-white" style="background-color: #00291C; border: none;">Species</button>
+        <button type="button" class="btn text-white" style="background-color: #00291C; border: none;" id="clearFilterBtn">Clear Filter</button>
+    </div>
+    <div class="float-end d-flex">
+        <input type="text" id="searchInput" class="form-control" placeholder="Search"
+               style="border: 1px solid #00291C; border-radius: 15px 0px 0px 15px ; width: 200px;" />
+        <button class="btn text-white" style="background-color: #00291C; border: none; border-radius: 0px 15px 15px 0px;">
+            <i class="bi bi-search"></i>
+        </button>
+    </div>
+
+    <div class="row">
+        <div class="col-12">
+            <table class="table table-striped text-center">
+                <thead>
+                    <tr>
+                        <th scope="col" class="fs-4 fw-bold">Pet Name</th>
+                        <th scope="col" class="fs-4 fw-bold">Pet Color</th>
+                        <th scope="col" class="fs-4 fw-bold">Species</th>
+                        <th scope="col" class="fs-4 fw-bold">Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var pet in Model)
+                    {
+                        <tr>
+                            <td>@pet.Name</td>
+                            <td>@pet.Color</td>
+                            <td>@pet.Species</td>
+                            <td>
+                                <button class="btn btn-primary btn-sm view-btn"
+                                        data-name="@pet.Name"
+                                        data-color="@pet.Color"
+                                        data-species="@pet.Species"
+                                        data-photo="@pet.PhotoPath"
+                                        data-owner="@pet.OwnerName"
+                                        data-owner-email="@pet.OwnerEmail"
+                                        data-owner-phone="@pet.OwnerPhone"
+                                        data-adoption-date="@(pet.AdoptionDate != null ? pet.AdoptionDate.Value.ToString("yyyy-MM-dd") : "Not Available")">
+                                    View
+                                </button>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+<!-- Pet Details Modal -->
+<div class="modal fade" id="petDetailsModal" tabindex="-1" aria-labelledby="petDetailsModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header bg-primary text-white">
+                <h5 class="modal-title" id="petDetailsModalLabel">Pet & Adoption Information</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div class="container">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <h6 class="fw-bold text-primary border-bottom pb-2">Pet Information</h6>
+                            <div class="text-center mb-3">
+                                <img id="modalPetImage" src="" class="img-thumbnail" width="150" alt="Pet Image">
+                            </div>
+                            <table class="table table-sm table-borderless">
+                                <tbody>
+                                    <tr><th>Pet Name:</th><td id="modalPetName"></td></tr>
+                                    <tr><th>Color:</th><td id="modalPetColor"></td></tr>
+                                    <tr><th>Species:</th><td id="modalPetSpecies"></td></tr>
+                                </tbody>
+                            </table>
+                        </div>
+
+                        <div class="col-md-6">
+                            <h6 class="fw-bold text-primary border-bottom pb-2">Adoption Information</h6>
+                            <table class="table table-sm table-borderless">
+                                <tbody>
+                                    <tr><th>Owner Name:</th><td id="modalOwnerName"></td></tr>
+                                    <tr><th>Email:</th><td id="modalOwnerEmail"></td></tr>
+                                    <tr><th>Phone:</th><td id="modalOwnerPhone"></td></tr>
+                                    <tr><th>Adoption Date:</th><td id="modalAdoptionDate"></td></tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        const viewButtons = document.querySelectorAll(".view-btn");
+
+        viewButtons.forEach(button => {
+            button.addEventListener("click", function () {
+                // Get pet details from button attributes
+                const petName = this.getAttribute("data-name");
+                const petColor = this.getAttribute("data-color");
+                const petSpecies = this.getAttribute("data-species");
+                const petPhoto = this.getAttribute("data-photo");
+                const ownerName = this.getAttribute("data-owner");
+                const ownerEmail = this.getAttribute("data-owner-email");
+                const ownerPhone = this.getAttribute("data-owner-phone");
+                const adoptionDate = this.getAttribute("data-adoption-date");
+
+                // Populate modal fields
+                document.getElementById("modalPetName").textContent = petName;
+                document.getElementById("modalPetColor").textContent = petColor;
+                document.getElementById("modalPetSpecies").textContent = petSpecies;
+                document.getElementById("modalOwnerName").textContent = ownerName;
+                document.getElementById("modalOwnerEmail").textContent = ownerEmail;
+                document.getElementById("modalOwnerPhone").textContent = ownerPhone;
+                document.getElementById("modalAdoptionDate").textContent = adoptionDate;
+
+                // Set pet image
+                const petImage = document.getElementById("modalPetImage");
+                if (petPhoto && petPhoto.trim() !== "") {
+                    petImage.src = petPhoto;
+                } else {
+                    petImage.src = "https://via.placeholder.com/150"; // Default image if no photo is available
+                }
+
+                // Show modal
+                var petDetailsModal = new bootstrap.Modal(document.getElementById("petDetailsModal"));
+                petDetailsModal.show();
+            });
+        });
+    });
+
+    //Filtering and Search
+    let dateSortOrder = 1;  // 1 for ascending, -1 for descending
+    let speciesSortState = 'cat'; // Toggle between 'cat' and 'dog'
+    let statusIndex = 0; // Track current status index
+
+    function sortPetsByDate() {
+        let table = document.querySelector("tbody");
+        let rows = Array.from(table.rows);
+
+        rows.sort((a, b) => {
+            let dateA = new Date(a.cells[0].innerText); // Adjust index if needed
+            let dateB = new Date(b.cells[0].innerText);
+            return dateSortOrder * (dateA - dateB);
+        });
+
+        dateSortOrder *= -1; // Toggle order
+        table.innerHTML = "";
+        rows.forEach(row => table.appendChild(row));
+    }
+
+    function filterBySpecies() {
+        let table = document.querySelector("tbody");
+        let rows = Array.from(table.rows);
+
+        rows.forEach(row => {
+            let speciesCell = row.cells[5].innerText.toLowerCase(); // Adjust index if needed
+            row.style.display = (speciesCell === speciesSortState) ? "" : "none";
+        });
+
+        speciesSortState = (speciesSortState === 'cat') ? 'dog' : 'cat'; // Toggle state
+    }
+
+    function clearFilter() {
+        let table = document.querySelector("tbody");
+        let rows = Array.from(table.rows);
+        // Reset display for all rows
+        rows.forEach(row => row.style.display = "");
+
+        // Optionally, reset your filter states if needed:
+        dateSortOrder = 1;
+        speciesSortState = 'cat';
+        statusIndex = 0;
+    }
+
+    document.addEventListener("DOMContentLoaded", function () {
+        let buttons = document.querySelectorAll(".btn-group .btn");
+        buttons[1].addEventListener("click", sortPetsByDate);
+        buttons[2].addEventListener("click", filterBySpecies);
+        document.getElementById("clearFilterBtn").addEventListener("click", clearFilter);
+    });
+      document.getElementById("searchInput").addEventListener("keyup", function () {
+        let filter = this.value.toLowerCase();
+        let table = document.querySelector("tbody");
+        let rows = table.getElementsByTagName("tr");
+
+        for (let row of rows) {
+            let cells = row.getElementsByTagName("td");
+            let match = false;
+
+            for (let cell of cells) {
+                if (cell.innerText.toLowerCase().includes(filter)) {
+                    match = true;
+                    break;
+                }
+            }
+
+            row.style.display = match ? "" : "none";
+        }
+    });
+</script>
+
