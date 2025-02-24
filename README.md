@@ -1,39 +1,17 @@
-<b>Second Chances - Pet Adoption System</b>
+    <h1>Second Chances - Pet Adoption System</h1>
+    
+    <h2>Project Goals</h2>
+    <ul>
+        <li>To provide a simple and efficient pet adoption system.</li>
+        <li>To raise awareness about animals in need of loving homes, such as dogs and cats.</li>
+        <li>To enhance the adoption experience for both animal shelters and adopters.</li>
+        <li>To encourage responsible pet ownership and help prevent animal abandonment.</li>
+    </ul>
 
-Project Goals
-
-Provide a simple and efficient pet adoption system.
-
-Raise awareness about animals in need of loving homes, such as dogs and cats.
-
-Enhance the adoption experience for both animal shelters and adopters.
-
-Encourage responsible pet ownership and help prevent animal abandonment.
-
-Project Features
-
-User Management
-
-Registration and login system for adopters and shelters.
-
-User role management (admin, adopter, shelter staff).
-
-Pet Adoption
-
-Browse available pets for adoption.
-
-Submit and track adoption applications.
-
-View pet details, including medical history and personality traits.
-
-Pet Management
-
-Shelters can add, update, and remove pet listings.
-
-Upload images and descriptions for each pet.
-
-Email Notification
-
-Automated email updates for adoption status.
-
-Notifications for application approval, rejection, and pending actions.
+    <h2>Project Features</h2>
+    <ol>
+        <li>User Management</li>
+        <li>Pet Adoption</li>
+        <li>Pet Management</li>
+        <li>Email Notification</li>
+    </ol>
