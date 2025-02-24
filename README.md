@@ -9,7 +9,7 @@
 ## Project Overview
 
 ### Landing Page
-![Landing Page](Screenshots/landingpage.png)
+![Landing Page](Screenshots/Landingpage.png)
 
 
 
