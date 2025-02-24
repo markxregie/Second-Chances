@@ -27,6 +27,12 @@
 
 ## Project Overview
 
+### Login Page
+![Login Page](Screenshots/login.png)
+
+### Signup Page
+![Signup Page](Screenshots/signup.png)
+
 ### Landing Page
 ![Landing Page](Screenshots/Landingpage.png)
 
